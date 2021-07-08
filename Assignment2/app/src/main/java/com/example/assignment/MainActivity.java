@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity{
     private LatLng latLng;
     double lat;
     double lng;
-    String number="0715491816";
+    String number="0716332197";
     String message="null";
     boolean stopClicked=false;
 
@@ -39,8 +39,6 @@ public class MainActivity extends AppCompatActivity{
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 PackageManager.PERMISSION_GRANTED);
-
-
 
     }
 
@@ -80,6 +78,7 @@ public class MainActivity extends AppCompatActivity{
                 SmsManager smgr = SmsManager.getDefault();
                 smgr.sendTextMessage(number,null,message,null,null);
                 Toast.makeText(getApplicationContext(),"SMS Sent to "+number, Toast.LENGTH_LONG).show();
+                Log.d("confirmation", "Message sent");
 
             }catch (Exception e){
                 Log.d("exception", e.toString());
