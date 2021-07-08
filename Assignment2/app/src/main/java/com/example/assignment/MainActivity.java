@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity{
                     latLng = new LatLng(location.getLatitude(), location.getLongitude());
                     lat=latLng.latitude;
                     lng=latLng.longitude;
-                    message="http://maps.google.com/maps?saddr="+lat+","+lng;
+                    message="Im janith IM-2017-082.plese help me. im in http://maps.google.com/?q="+lat+","+lng;
                     Log.d("message",message);
                     sendSms(message);
                 }catch (SecurityException | InterruptedException e){
