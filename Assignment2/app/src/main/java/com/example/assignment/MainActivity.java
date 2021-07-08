@@ -14,27 +14,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends AppCompatActivity{
 
-    private GoogleMap gMap;
-    private CameraPosition cameraPosition;
-
     private LocationListener locationListener;
     private LocationManager locationManager;
-    private final long MIN_TIME=1000; //minimum time interval between location updates, in milliseconds
-    private final long MIN_DISTANCE=5; //minimum distance between location updates, in meters
+    private final long MIN_TIME=1000;
+    private final long MIN_DISTANCE=5;
     private LatLng latLng;
     double lat;
     double lng;
     String number="0715491816";
     String message="null";
+    boolean stopClicked=false;
 
 
     @Override
@@ -48,10 +41,11 @@ public class MainActivity extends AppCompatActivity{
                 PackageManager.PERMISSION_GRANTED);
 
 
+
     }
 
-    public void onMapReady(View view) {
-
+    public void onMapReady() {
+        stopClicked=false;
         locationListener=new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -62,9 +56,7 @@ public class MainActivity extends AppCompatActivity{
                     message="http://maps.google.com/maps?saddr="+lat+","+lng;
                     Log.d("message",message);
                     sendSms(message);
-//                    gMap.addMarker(new MarkerOptions().position(latLng).title("Latitude :"+latLng.latitude+" & Longitude :"+latLng.longitude));
-//                    gMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                }catch (SecurityException e){
+                }catch (SecurityException | InterruptedException e){
                     e.printStackTrace();
                 }
             }
@@ -82,18 +74,30 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public void sendSms(String message) {
-        try{
-                Log.d("inside try", "athule pako");
+    public void sendSms(String message) throws InterruptedException {
+        while(!stopClicked){
+            try{
                 SmsManager smgr = SmsManager.getDefault();
                 smgr.sendTextMessage(number,null,message,null,null);
                 Toast.makeText(getApplicationContext(),"SMS Sent to "+number, Toast.LENGTH_LONG).show();
 
-        }catch (Exception e){
-            Log.d("exception", e.toString());
+            }catch (Exception e){
+                Log.d("exception", e.toString());
+            }
+
+            Thread.sleep(60000);
         }
-    }
-
-
 
     }
+
+    public void onSendSmsClicked(View view){
+            onMapReady();
+
+    }
+
+    public void onStopClicked(View view){
+        stopClicked=true;
+        Toast.makeText(getApplicationContext(),"STOP CLICKED", Toast.LENGTH_LONG).show();
+    }
+
+}
