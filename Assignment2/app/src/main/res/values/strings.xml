@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Assignment</string>
+    <string name="send_alert">SEND ALERT</string>
+    <string name="stop">STOP</string>
+</resources>
